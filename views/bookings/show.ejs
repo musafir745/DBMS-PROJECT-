@@ -30,7 +30,7 @@
         <div class="col-md-6">
           <p><b>Hotel:</b> <a href="/listings/<%= booking.hotel_id %>" class="text-dark"><%= booking.hotel_name %></a></p>
           <p><b>Room:</b> <a href="/rooms/<%= booking.room_id %>" class="text-dark"><%= booking.room_type %></a></p>
-          <p><b>Price:</b> &#8377;<%= Number(booking.price).toLocaleString("en-IN") %>/night</p>
+          <p><b>Price:</b> &#8377;<%= Number(booking.price).toLocaleString("en-BD") %>/night</p>
         </div>
       </div>
       <hr>
