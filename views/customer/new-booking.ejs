@@ -11,7 +11,7 @@
           <option value="">Choose room</option>
           <% for (let room of rooms) { %>
             <option value="<%= room.room_id %>" <%= selectedRoomId === room.room_id ? "selected" : "" %>>
-              <%= room.hotel_name %> - <%= room.room_type %> (&#8377;<%= Number(room.price).toLocaleString("en-IN") %>)
+              <%= room.hotel_name %> - <%= room.room_type %> (৳<%= Number(room.price).toLocaleString("en-BD") %>)
             </option>
           <% } %>
         </select>
