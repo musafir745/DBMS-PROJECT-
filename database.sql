@@ -1,21 +1,5 @@
-CREATE DATABASE IF NOT EXISTS wanderlust_db;
+CREATE DATABASE  wanderlust_db;
 USE wanderlust_db;
-
-DROP TABLE IF EXISTS bookings;
-DROP TABLE IF EXISTS rooms;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS hotels;
-
-CREATE TABLE users (
-  user_id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(120) NOT NULL,
-  email VARCHAR(150) NOT NULL UNIQUE,
-  phone VARCHAR(30) NULL,
-  password VARCHAR(255) NOT NULL,
-  role ENUM('customer', 'admin') NOT NULL DEFAULT 'customer',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  INDEX idx_users_role (role)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE hotels (
   hotel_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -43,6 +27,14 @@ CREATE TABLE rooms (
   CONSTRAINT chk_rooms_price CHECK (price > 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE customers (
+  customer_id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(120) NOT NULL,
+  email VARCHAR(150) UNIQUE,
+  phone VARCHAR(30),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE bookings (
   booking_id INT AUTO_INCREMENT PRIMARY KEY,
   room_id INT NOT NULL,
@@ -55,20 +47,12 @@ CREATE TABLE bookings (
     FOREIGN KEY (room_id) REFERENCES rooms(room_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-  CONSTRAINT fk_bookings_users
-    FOREIGN KEY (customer_id) REFERENCES users(user_id)
+  CONSTRAINT fk_bookings_customers
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-  CONSTRAINT chk_booking_dates CHECK (check_out_date > check_in_date),
-  INDEX idx_bookings_customer (customer_id),
-  INDEX idx_bookings_room_dates (room_id, check_in_date, check_out_date)
+  CONSTRAINT chk_booking_dates CHECK (check_out_date > check_in_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO users (name, email, phone, password, role) VALUES
-('System Administrator', 'admin@wanderlust.com', '+880 1700-000000', '$2b$12$a/eOy0QxGeo8VlQftapDe.R033R5fEFKME9wTfqa9Q5o2xEsG1t/W', 'admin'),
-('Ayesha Rahman', 'ayesha@example.com', '+880 1811-111111', '$2b$12$.7ivXfyLDTLoADwIbfrT..yN8fxLA2lpnfODKqHh/Zhtqvd5BDy0W', 'customer'),
-('Nafis Ahmed', 'nafis@example.com', '+880 1822-222222', '$2b$12$.7ivXfyLDTLoADwIbfrT..yN8fxLA2lpnfODKqHh/Zhtqvd5BDy0W', 'customer'),
-('Maliha Islam', 'maliha@example.com', '+880 1833-333333', '$2b$12$.7ivXfyLDTLoADwIbfrT..yN8fxLA2lpnfODKqHh/Zhtqvd5BDy0W', 'customer');
 
 INSERT INTO hotels (name, location, description, contact, image_url) VALUES
 ('Sea Breeze Resort', 'Cox''s Bazar', 'A beach-side hotel with sea-facing rooms and easy access to the main beach.', '+880 1711-111111', 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80'),
@@ -81,6 +65,11 @@ INSERT INTO rooms (hotel_id, room_type, capacity, price, availability) VALUES
 (2, 'Hill View Double', 2, 4800.00, 'Available'),
 (3, 'Business Single', 1, 3500.00, 'Available');
 
+INSERT INTO customers (name, email, phone) VALUES
+('Ayesha Rahman', 'ayesha@example.com', '+880 1811-111111'),
+('Nafis Ahmed', 'nafis@example.com', '+880 1822-222222'),
+('Maliha Islam', 'maliha@example.com', '+880 1833-333333');
+
 INSERT INTO bookings (room_id, customer_id, check_in_date, check_out_date, status) VALUES
-(1, 2, '2026-07-20', '2026-07-23', 'Confirmed'),
-(3, 3, '2026-08-02', '2026-08-05', 'Pending');
+(1, 1, '2026-07-20', '2026-07-23', 'Confirmed'),
+(3, 2, '2026-08-02', '2026-08-05', 'Pending');
