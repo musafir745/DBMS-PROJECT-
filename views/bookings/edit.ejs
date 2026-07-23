@@ -9,7 +9,7 @@
         <select id="room_id" name="booking[room_id]" class="form-select" required>
           <% for (let room of rooms) { %>
             <option value="<%= room.room_id %>" <%= booking.room_id === room.room_id ? "selected" : "" %>>
-              <%= room.hotel_name %> - <%= room.room_type %> (&#8377;<%= Number(room.price).toLocaleString("en-IN") %>)
+              <%= room.hotel_name %> - <%= room.room_type %> ৳<%= Number(room.price).toLocaleString("en-BD") %> %>)
             </option>
           <% } %>
         </select>
