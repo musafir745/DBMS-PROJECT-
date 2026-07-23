@@ -20,7 +20,7 @@
       <p><b>Room ID:</b> <%= room.room_id %></p>
       <p><b>Hotel:</b> <a href="/listings/<%= room.hotel_id %>" class="text-dark"><%= room.hotel_name %></a></p>
       <p><b>Capacity:</b> <%= room.capacity %></p>
-      <p><b>Price:</b> &#8377;<%= Number(room.price).toLocaleString("en-IN") %>/night</p>
+      <p><b>Price:</b> ৳<%= Number(room.price).toLocaleString("en-BD") %>/night</p>
       <p class="mb-0"><b>Availability:</b> <%= room.availability %></p>
     </div>
   </div>
