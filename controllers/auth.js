@@ -21,7 +21,11 @@ function createSession(req, user) {
         email: user.email,
         role: user.role,
       };
-      resolve();
+
+      req.session.save((err) => {
+        if (err) return reject(err);
+        resolve();
+      });
     });
   });
 }
